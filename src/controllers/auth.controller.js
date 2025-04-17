@@ -3,7 +3,6 @@ const authService = require('../services/auth.service')
 
 
 module.exports.signup = async (req, res) => {
-	// console.log(req.body)
 
 	try {
 		const result = await authService.createNewUser(req.body);
@@ -13,10 +12,6 @@ module.exports.signup = async (req, res) => {
 		return res.status(err.statusCode || 500).json({ error: err.message });
 	}
 
-
-
-	const result = await authService.createNewUser(req.body)
-	res.json(result)
 }
 
 

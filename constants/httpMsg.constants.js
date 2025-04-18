@@ -18,6 +18,15 @@ module.exports = {
 	REFRESH_TOKEN_CREATE_ERROR: 'Ошибка при создании refresh токена в БД',
 	REFRESH_TOKEN_EMPTY: 'В запросе отсутвует рефреш токен',
 	REFRESH_TOKEN_EXPIRED: 'Срок рефреш токена истек',
-	REFRESH_TOKEN_REVOKED: 'Рефреш токен отозван'
+	REFRESH_TOKEN_REVOKED: 'Рефреш токен отозван',
 
+
+
+	FILE_UPLOAD: 'Файл успешно загружен',
+	FILE_UPLOAD_ERROR: 'Ошибка при загрузке файла',
+	FILE_NOT_FOUND: 'Файл не найден',
+
+
+
+	FORBIDDEN_MIME_TYPES: 'Недопустимый тип файла'
 };

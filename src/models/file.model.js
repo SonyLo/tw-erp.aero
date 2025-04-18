@@ -8,7 +8,12 @@ const File = sequelize.define('File', {
 		defaultValue: DataTypes.UUIDV4,
 		primaryKey: true,
 	},
-	name: {
+
+	origname: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+	file_name: {
 		type: DataTypes.STRING,
 		allowNull: false,
 	},

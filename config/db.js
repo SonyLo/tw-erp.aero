@@ -11,6 +11,7 @@ const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME
 	dialect: process.env.DB_CONNECTION,
 	logging: false,
 	timezone: '+03:00',
+	// logging: console.log, 
 	retry: {
 		max: 5,
 		match: [/08S01/, /ER_CONNECTION_TIMEOUT/],

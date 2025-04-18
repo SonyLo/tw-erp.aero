@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../config/db');
 
 
-const BlackListToken = sequelize.define('File', {
+const BlackListToken = sequelize.define('BlackListToken', {
 	token: {
 		type: DataTypes.STRING(1000),
 		allowNull: false,

@@ -111,8 +111,6 @@ router.get('/info', authMiddelware, authController.info)
  *     summary: Выход
  *     tags: [Auth]
  *     description: 
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Успешно выполнено

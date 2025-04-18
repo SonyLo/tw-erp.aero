@@ -8,4 +8,6 @@ module.exports = {
 
 
 	REFRESH_TOKEN_CREATE_ERROR: 'Ошибка при создании refresh токена в БД',
+	ACCSES_TOKEN_EMPTY: 'В запросе отсутвует токен',
+	ACCSES_TOKEN_EXPIRED: 'Срок аксес токена истек'
 };

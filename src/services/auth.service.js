@@ -92,3 +92,7 @@ module.exports.login = async (user, infoUserAgent) => {
 	return { tokenAccess, tokenRefresh }
 
 }
+
+module.exports.info = async (user) => {
+	return user.id
+}

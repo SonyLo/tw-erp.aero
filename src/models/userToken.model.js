@@ -15,7 +15,7 @@ const UserToken = sequelize.define('UserToken', {
 		allowNull: false,
 	},
 	token: {
-		type: DataTypes.STRING,
+		type: DataTypes.STRING(1000),
 		allowNull: false,
 	},
 

@@ -4,7 +4,7 @@ const { sequelize } = require('../../config/db');
 
 const BlackListToken = sequelize.define('File', {
 	token: {
-		type: DataTypes.STRING,
+		type: DataTypes.STRING(1000),
 		allowNull: false,
 	},
 

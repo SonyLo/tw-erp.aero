@@ -4,6 +4,8 @@ const { StatusCodes } = require('http-status-codes');
 // const User = require('../models/user.model')
 const { User, UserToken } = require('../models/index')
 
+const { sequelize } = require('../../config/db')
+
 const { userValidator } = require('../validators/createUser.validator')
 const { requiredValidator } = require('../validators/required.validator')
 
@@ -131,18 +133,22 @@ module.exports.newAccesToken = async (refreshToken) => {
 
 
 module.exports.logout = async (accessToken, refreshToken) => {
+	let transaction = null
 
-	// в бд ставим - что рефреш токен отозван
-	// нужно создать блек лист для аксес токенов
 	try {
-		let resultAccsesToken = await blackListToken.addAccsesBlackList(accessToken)
-		let resultRefreshToken = await blackListToken.addRefreshBlackList(refreshToken)
+		transaction = await sequelize.transaction();
+
+		const resultAccsesToken = await blackListToken.addAccsesBlackList(accessToken, { transaction });
+		const resultRefreshToken = await blackListToken.addRefreshBlackList(refreshToken, { transaction });
+
+		await transaction.commit();
 		return {
 			resultAccsesToken,
 			resultRefreshToken
 		}
 	}
 	catch (err) {
+		await transaction.rollback();
 		return httpError(err.message)
 	}
 

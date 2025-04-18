@@ -53,7 +53,7 @@ const checkRefreshBlackList = async (token) => {
 }
 
 
-module.exports.addAccsesBlackList = async (token) => {
+const addAccsesBlackList = async (token, options = {}) => {
 
 
 
@@ -63,7 +63,7 @@ module.exports.addAccsesBlackList = async (token) => {
 	try {
 		const createToken = await BlackListToken.create({
 			token: token
-		})
+		}, options)
 
 		return {
 			success: true,
@@ -76,7 +76,7 @@ module.exports.addAccsesBlackList = async (token) => {
 }
 
 
-module.exports.addRefreshBlackList = async (token) => {
+const addRefreshBlackList = async (token, options = {}) => {
 	const result = await checkRefreshBlackList(token)
 	if (result) return httpError(httpMsg.REFRESH_TOKEN_REVOKED, StatusCodes.BAD_REQUEST)
 
@@ -89,7 +89,8 @@ module.exports.addRefreshBlackList = async (token) => {
 			{
 				where: {
 					token: token
-				}
+				},
+				options
 			})
 
 		return {
@@ -100,4 +101,11 @@ module.exports.addRefreshBlackList = async (token) => {
 	} catch (error) {
 		return error
 	}
+}
+
+module.exports = {
+	checkAccsesBlackList,
+	checkRefreshBlackList,
+	addAccsesBlackList,
+	addRefreshBlackList
 }

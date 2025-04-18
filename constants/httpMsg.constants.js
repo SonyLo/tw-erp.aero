@@ -4,5 +4,8 @@ module.exports = {
 	USER_CREATED: 'Пользователь успешно создан',
 	USER_NOT_FOUND: 'Пользователь не найден',
 
-	INVALID_PASSWORD: 'Неверный пароль'
+	INVALID_PASSWORD: 'Неверный пароль',
+
+
+	REFRESH_TOKEN_CREATE_ERROR: 'Ошибка при создании refresh токена в БД',
 };

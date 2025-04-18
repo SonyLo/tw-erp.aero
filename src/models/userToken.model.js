@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../config/db');
+
+
 const User = require('./user.model');
 
 const UserToken = sequelize.define('UserToken', {
@@ -16,15 +18,22 @@ const UserToken = sequelize.define('UserToken', {
 		type: DataTypes.STRING,
 		allowNull: false,
 	},
+
 	user_agent: DataTypes.STRING,
+
 	ip: DataTypes.STRING,
+
+	is_revoked: {
+		type: DataTypes.BOOLEAN,
+		defaultValue: false
+	},
 }, {
 	tableName: 'user_tokens',
 	timestamps: true,
 });
 
 // Связь
-User.hasMany(UserToken, { foreignKey: 'user_id' });
-UserToken.belongsTo(User, { foreignKey: 'user_id' });
+// User.hasMany(UserToken, { foreignKey: 'user_id' });
+// UserToken.belongsTo(User, { foreignKey: 'user_id' });
 
 module.exports = UserToken;

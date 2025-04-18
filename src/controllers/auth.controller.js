@@ -4,6 +4,8 @@ const authService = require('../services/auth.service')
 
 const helper = require('../../utils/helper')
 
+const blackListToken = require('../../utils/blackListToken')
+
 module.exports.signup = async (req, res) => {
 
 	try {
@@ -47,6 +49,7 @@ module.exports.newToken = async (req, res) => {
 
 	try {
 		const refreshToken = helper.getRefreshToken(req);
+		const checkRefreshBlackList = await blackListToken.checkRefreshBlackList(refreshToken)
 		const result = await authService.newAccesToken(refreshToken)
 
 		return res.status(StatusCodes.OK).json({ token: result });

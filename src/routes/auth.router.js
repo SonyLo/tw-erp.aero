@@ -117,7 +117,7 @@ router.get('/info', authMiddelware, authController.info)
  *       200:
  *         description: Успешно выполнено
  */
-router.get('/logout', authMiddelware, authController.logout)
+router.get('/logout', authController.logout)
 
 
 

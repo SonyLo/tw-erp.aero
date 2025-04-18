@@ -7,6 +7,10 @@ const { StatusCodes } = require('http-status-codes')
 const httpMsg = require('../../constants/httpMsg.constants')
 const { requiredValidator } = require('../validators/required.validator')
 
+
+
+const blackListToken = require('../../utils/blackListToken')
+
 const authMiddelware = async (req, res, next) => {
 
 	const accessToken = helper.getAccesToken(req)
@@ -17,6 +21,7 @@ const authMiddelware = async (req, res, next) => {
 
 	try {
 
+		await blackListToken.checkAccsesBlackList(accessToken)
 		jwt.verifyToken(accessToken)
 
 		req.user = jwt.decodeToken(accessToken)

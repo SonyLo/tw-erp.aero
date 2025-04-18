@@ -47,7 +47,7 @@ module.exports.newToken = async (req, res) => {
 	// console.log(refreshToken)
 	const result = await authService.newAccesToken(refreshToken)
 
-	return res.status(StatusCodes.OK).json(result);
+	return res.status(StatusCodes.OK).json({ token: result });
 }
 
 module.exports.info = async (req, res) => {

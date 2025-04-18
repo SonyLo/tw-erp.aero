@@ -13,7 +13,7 @@ const authMiddelware = require('../middleware/auth.middleware')
  * /signup:
  *   post:
  *     summary: Регистрация
- *     tags: [V1]
+ *     tags: [Auth]
  *     description: Регистрация нового пользователя
  *     requestBody:
  *       required: true
@@ -37,7 +37,7 @@ router.post('/signup', authController.signup)
  * /signin:
  *   post:
  *     summary: Вход
- *     tags: [V1]
+ *     tags: [Auth]
  *     description: Запрос jwt-токена по id и паролю
  *     requestBody:
  *       required: true
@@ -61,15 +61,52 @@ router.post('/signin', authController.signin)
 
 
 
-
-
 router.post('/signin/new_token', authController.newToken)
 
 
 
 
+
+
+
+/**
+ * @swagger
+ * /info:
+ *   get:
+ *     summary: Инфо
+ *     tags: [Auth]
+ *     description: Айди юзера берется из токена. Запрос требует авторизации.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Успешно выполнено
+ */
 router.get('/info', authMiddelware, authController.info)
-router.post('/logout', authMiddelware, authController.logout)
+
+
+
+
+
+
+
+
+
+
+/**
+ * @swagger
+ * /logout:
+ *   get:
+ *     summary: Выход
+ *     tags: [Auth]
+ *     description: 
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Успешно выполнено
+ */
+router.get('/logout', authMiddelware, authController.logout)
 
 
 

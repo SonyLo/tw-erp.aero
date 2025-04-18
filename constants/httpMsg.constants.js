@@ -7,7 +7,14 @@ module.exports = {
 	INVALID_PASSWORD: 'Неверный пароль',
 
 
+
+	ACCSES_TOKEN_EMPTY: 'В запросе отсутвует аксес токен',
+	ACCSES_TOKEN_EXPIRED: 'Срок аксес токена истек',
+	ACCSES_TOKEN_REVOKED: 'Аксес токен в блек листе',
+
 	REFRESH_TOKEN_CREATE_ERROR: 'Ошибка при создании refresh токена в БД',
-	ACCSES_TOKEN_EMPTY: 'В запросе отсутвует токен',
-	ACCSES_TOKEN_EXPIRED: 'Срок аксес токена истек'
+	REFRESH_TOKEN_EMPTY: 'В запросе отсутвует рефреш токен',
+	REFRESH_TOKEN_EXPIRED: 'Срок рефреш токена истек',
+	REFRESH_TOKEN_REVOKED: 'Рефреш токен отозван'
+
 };

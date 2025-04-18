@@ -40,13 +40,20 @@ module.exports.signin = async (req, res) => {
 }
 
 module.exports.newToken = async (req, res) => {
-	return ""
+	// return ""
+
+
+	const refreshToken = req.cookies.refreshToken;
+	// console.log(refreshToken)
+	const result = await authService.newAccesToken(refreshToken)
+
+	return res.status(StatusCodes.OK).json(result);
 }
 
 module.exports.info = async (req, res) => {
 
-	const ress = await authService.info(req.user)
-	return res.status(StatusCodes.OK).json({ id: ress });
+	const result = await authService.info(req.user)
+	return res.status(StatusCodes.OK).json({ id: result });
 }
 
 

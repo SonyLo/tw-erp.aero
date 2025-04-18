@@ -4,24 +4,27 @@ const bcrypt = require('bcryptjs');
 const { User, UserToken } = require('../models/index')
 
 const { userValidator } = require('../validators/createUser.validator')
+const { requiredValidator } = require('../validators/required.validator')
+
 const { httpError } = require('../../utils/httpError')
 const httpMsg = require('../../constants/httpMsg.constants')
 
 
-const jwt = require('../../utils/jwt')
+const jwt = require('../../utils/jwt');
+const { StatusCodes } = require('http-status-codes');
 
 
 module.exports.createNewUser = async (user) => {
 
 	const result = userValidator(user)
-	if (result) httpError(result, 400)
+	if (result) httpError(result, StatusCodes.BAD_REQUEST)
 	const candidat = await User.findOne({
 		where: {
 			id: user.id
 		}
 	})
 
-	if (candidat) httpError(httpMsg.USER_EXISTS, 400)
+	if (candidat) httpError(httpMsg.USER_EXISTS, StatusCodes.BAD_REQUEST)
 
 	const salt = bcrypt.genSaltSync(10)
 	let hash = await bcrypt.hash(user.pass, salt);
@@ -34,7 +37,8 @@ module.exports.createNewUser = async (user) => {
 		})
 	}
 	catch (err) {
-		throw new Error(`${httpMsg.USER_CREATE_ERROR}  ${err.message}`);
+		// throw new Error(`${httpMsg.USER_CREATE_ERROR}  ${err.message}`);
+		return httpError(httpMsg.USER_CREATE_ERROR, StatusCodes.BAD_REQUEST)
 	}
 
 	return httpMsg.USER_CREATED
@@ -43,7 +47,7 @@ module.exports.createNewUser = async (user) => {
 
 module.exports.login = async (user, infoUserAgent) => {
 	const result = userValidator(user)
-	if (result) httpError(result, 400)
+	if (result) httpError(result, StatusCodes.BAD_REQUEST)
 
 	const candidat = await User.findOne({
 		where: {
@@ -52,7 +56,7 @@ module.exports.login = async (user, infoUserAgent) => {
 	})
 
 
-	if (!candidat) httpError(httpMsg.USER_NOT_FOUND, 404)
+	if (!candidat) httpError(httpMsg.USER_NOT_FOUND, StatusCodes.NOT_FOUND)
 
 	//нужно проверить если рефреш токен есть и не просрочен - тогда вернуть что пользователь уже авторизован
 
@@ -65,12 +69,12 @@ module.exports.login = async (user, infoUserAgent) => {
 	})
 
 	if (userTokens.length > 0) {
-		return httpError('Пользователь уже авторизован', 401)
+		return httpError('Пользователь уже авторизован', StatusCodes.UNAUTHORIZED)
 	}
 
 	const match = await bcrypt.compare(user.pass, candidat.password_hash);
 	if (!match) {
-		return httpError(httpMsg.INVALID_PASSWORD, 401)
+		return httpError(httpMsg.INVALID_PASSWORD, StatusCodes.UNAUTHORIZED)
 	}
 
 
@@ -95,4 +99,48 @@ module.exports.login = async (user, infoUserAgent) => {
 
 module.exports.info = async (user) => {
 	return user.id
+}
+
+
+module.exports.newAccesToken = async (refreshToken) => {
+	let isValid = requiredValidator(refreshToken)
+	if (isValid) return httpError(httpMsg.REFRESH_TOKEN_EMPTY, StatusCodes.UNAUTHORIZED);
+
+	try {
+		jwt.verifyToken(refreshToken)
+		const candidat = await UserToken.findOne({
+			where: {
+				token: refreshToken,
+				is_revoked: false
+			}
+		})
+		if (!candidat) return httpError(httpMsg.REFRESH_TOKEN_REVOKED, StatusCodes.UNAUTHORIZED)
+		// console.log(candidat.user_id)
+
+		let user = await User.findOne({
+			where: {
+				uuid: candidat.user_id
+			}
+		})
+		// console.log(user)
+		const payload = {
+			id: user.id,
+			pass: user.password_hash
+		};
+		return jwt.generateAccessToken(payload)
+
+	}
+	catch (err) {
+		return httpError(err.message)
+		// return res.status(StatusCodes.UNAUTHORIZED).json({ error: httpMsg.REFRESH_TOKEN_EXPIRED })
+	}
+
+
+
+	//проверить в бд не отозван ли и не истек ли его срок
+	//если все норм - прост выдаем новый аксес токен?
+	//  если нет  - вертаем Unauth
+
+
+	return "pupu"
 }

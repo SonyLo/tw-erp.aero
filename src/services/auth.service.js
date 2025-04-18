@@ -10,6 +10,8 @@ const { httpError } = require('../../utils/httpError')
 const httpMsg = require('../../constants/httpMsg.constants')
 
 
+
+
 const jwt = require('../../utils/jwt');
 const { StatusCodes } = require('http-status-codes');
 
@@ -45,7 +47,7 @@ module.exports.createNewUser = async (user) => {
 }
 
 
-module.exports.login = async (user, infoUserAgent) => {
+module.exports.signin = async (user, infoUserAgent) => {
 	const result = userValidator(user)
 	if (result) httpError(result, StatusCodes.BAD_REQUEST)
 
@@ -58,19 +60,20 @@ module.exports.login = async (user, infoUserAgent) => {
 
 	if (!candidat) httpError(httpMsg.USER_NOT_FOUND, StatusCodes.NOT_FOUND)
 
-	//нужно проверить если рефреш токен есть и не просрочен - тогда вернуть что пользователь уже авторизован
+	//нужно проверить если рефреш токен есть и не отозван - тогда вернуть что пользователь уже авторизован
+	///вопросики, тут наверное нужно и акссес токен проверить 
 
 	let userTokens = await candidat.getUserTokens({
 		where: {
 			user_agent: infoUserAgent.userAgent,
-			ip: infoUserAgent.ip,
 			is_revoked: false,
 		}
 	})
 
 	if (userTokens.length > 0) {
-		return httpError('Пользователь уже авторизован', StatusCodes.UNAUTHORIZED)
+		return httpError('Пользователь уже авторизован', StatusCodes.BAD_REQUEST)
 	}
+	///вопросики
 
 	const match = await bcrypt.compare(user.pass, candidat.password_hash);
 	if (!match) {
@@ -115,7 +118,6 @@ module.exports.newAccesToken = async (refreshToken) => {
 			}
 		})
 		if (!candidat) return httpError(httpMsg.REFRESH_TOKEN_REVOKED, StatusCodes.UNAUTHORIZED)
-		// console.log(candidat.user_id)
 
 		let user = await User.findOne({
 			where: {
@@ -132,15 +134,7 @@ module.exports.newAccesToken = async (refreshToken) => {
 	}
 	catch (err) {
 		return httpError(err.message)
-		// return res.status(StatusCodes.UNAUTHORIZED).json({ error: httpMsg.REFRESH_TOKEN_EXPIRED })
+
 	}
 
-
-
-	//проверить в бд не отозван ли и не истек ли его срок
-	//если все норм - прост выдаем новый аксес токен?
-	//  если нет  - вертаем Unauth
-
-
-	return "pupu"
 }

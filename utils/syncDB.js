@@ -4,6 +4,7 @@ const { sequelize } = require('../config/db');
 User = require('../src/models/user.model');
 UserToken = require('../src/models/userToken.model');
 File = require('../src/models/file.model');
+BlackListToken = require('../src/models/blackListToken.model');
 
 (async () => {
 	try {

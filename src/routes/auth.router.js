@@ -5,6 +5,7 @@ const router = express.Router()
 const authController = require('../controllers/auth.controller')
 
 const authMiddelware = require('../middleware/auth.middleware')
+const isLoginMiddelware = require('../middleware/isLogin.middleware')
 
 
 
@@ -52,15 +53,25 @@ router.post('/signup', authController.signup)
  *                   type: string
  *     responses:
  *       200:
+ *         description: Успешный вход
+ */
+router.post('/signin', isLoginMiddelware, authController.signin)
+
+
+
+
+
+/**
+ * @swagger
+ * /signin:
+ *   post:
+ *     summary: Новый токен
+ *     tags: [Auth]
+ *     description: Запрос jwt-токена по рефреш токену
+ *     responses:
+ *       200:
  *         description: Успешно зарегистрирован
  */
-router.post('/signin', authController.signin)
-
-
-
-
-
-
 router.post('/signin/new_token', authController.newToken)
 
 

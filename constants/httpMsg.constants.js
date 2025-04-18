@@ -4,6 +4,9 @@ module.exports = {
 	USER_CREATED: 'Пользователь успешно создан',
 	USER_NOT_FOUND: 'Пользователь не найден',
 
+	USER_ALREADY_AUTHORIZED: 'Пользователь уже авторизован',
+
+
 	INVALID_PASSWORD: 'Неверный пароль',
 
 

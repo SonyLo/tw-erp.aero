@@ -4,3 +4,11 @@ module.exports.getAccesToken = (req) => {
 
 
 }
+
+module.exports.getRefreshToken = (req) => {
+
+	return req.cookies.refreshToken
+
+}
+
+

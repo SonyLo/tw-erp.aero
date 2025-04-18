@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const { StatusCodes } = require('http-status-codes');
 
 // const User = require('../models/user.model')
 const { User, UserToken } = require('../models/index')
@@ -13,7 +14,7 @@ const httpMsg = require('../../constants/httpMsg.constants')
 
 
 const jwt = require('../../utils/jwt');
-const { StatusCodes } = require('http-status-codes');
+
 
 
 module.exports.createNewUser = async (user) => {
@@ -47,7 +48,9 @@ module.exports.createNewUser = async (user) => {
 }
 
 
-module.exports.signin = async (user, infoUserAgent) => {
+module.exports.signin = async (user, infoUserAgent, accessToken) => {
+
+
 	const result = userValidator(user)
 	if (result) httpError(result, StatusCodes.BAD_REQUEST)
 
@@ -60,24 +63,9 @@ module.exports.signin = async (user, infoUserAgent) => {
 
 	if (!candidat) httpError(httpMsg.USER_NOT_FOUND, StatusCodes.NOT_FOUND)
 
-	//нужно проверить если рефреш токен есть и не отозван - тогда вернуть что пользователь уже авторизован
-	///вопросики, тут наверное нужно и акссес токен проверить 
-
-	let userTokens = await candidat.getUserTokens({
-		where: {
-			user_agent: infoUserAgent.userAgent,
-			is_revoked: false,
-		}
-	})
-
-	if (userTokens.length > 0) {
-		return httpError('Пользователь уже авторизован', StatusCodes.BAD_REQUEST)
-	}
-	///вопросики
-
 	const match = await bcrypt.compare(user.pass, candidat.password_hash);
 	if (!match) {
-		return httpError(httpMsg.INVALID_PASSWORD, StatusCodes.UNAUTHORIZED)
+		return httpError(httpMsg.INVALID_PASSWORD, StatusCodes.UNAUTHORIZED) // 
 	}
 
 
@@ -124,7 +112,7 @@ module.exports.newAccesToken = async (refreshToken) => {
 				uuid: candidat.user_id
 			}
 		})
-		// console.log(user)
+
 		const payload = {
 			id: user.id,
 			pass: user.password_hash
@@ -136,5 +124,16 @@ module.exports.newAccesToken = async (refreshToken) => {
 		return httpError(err.message)
 
 	}
+
+}
+
+
+
+module.exports.logout = async (accessToken, refreshToken) => {
+
+	// в бд ставим - что рефреш токен отозван
+	// нужно создать блек лист для аксес токенов
+
+
 
 }

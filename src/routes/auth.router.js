@@ -63,7 +63,7 @@ router.post('/signin', isLoginMiddelware, authController.signin)
 
 /**
  * @swagger
- * /signin:
+ * /signin/new_token:
  *   post:
  *     summary: Новый токен
  *     tags: [Auth]

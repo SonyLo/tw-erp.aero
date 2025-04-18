@@ -11,6 +11,7 @@ const { httpError } = require('../../utils/httpError')
 const httpMsg = require('../../constants/httpMsg.constants')
 
 
+const blackListToken = require('../../utils/blackListToken')
 
 
 const jwt = require('../../utils/jwt');
@@ -133,7 +134,16 @@ module.exports.logout = async (accessToken, refreshToken) => {
 
 	// в бд ставим - что рефреш токен отозван
 	// нужно создать блек лист для аксес токенов
-
-
+	try {
+		let resultAccsesToken = await blackListToken.addAccsesBlackList(accessToken)
+		let resultRefreshToken = await blackListToken.addRefreshBlackList(refreshToken)
+		return {
+			resultAccsesToken,
+			resultRefreshToken
+		}
+	}
+	catch (err) {
+		return httpError(err.message)
+	}
 
 }

@@ -13,6 +13,6 @@ const BlackListToken = sequelize.define('File', {
 	timestamps: true,
 });
 
-module.exports = File;
+module.exports = BlackListToken;
 
 

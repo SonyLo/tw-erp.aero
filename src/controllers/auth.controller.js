@@ -11,7 +11,7 @@ module.exports.signup = async (req, res) => {
 		return res.status(StatusCodes.CREATED).json({ message: result });
 	} catch (err) {
 		console.error(err);
-		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+		return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
 	}
 
 }
@@ -37,7 +37,7 @@ module.exports.signin = async (req, res) => {
 		return res.status(StatusCodes.OK).json(result);
 	} catch (err) {
 		console.error(err);
-		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+		return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
 	}
 
 
@@ -52,7 +52,7 @@ module.exports.newToken = async (req, res) => {
 		return res.status(StatusCodes.OK).json({ token: result });
 	}
 	catch (err) {
-		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+		return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
 	}
 
 
@@ -65,7 +65,7 @@ module.exports.info = async (req, res) => {
 		return res.status(StatusCodes.OK).json({ id: result });
 	} catch (err) {
 		console.error(err);
-		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+		return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
 	}
 
 
@@ -82,8 +82,8 @@ module.exports.logout = async (req, res) => {
 		const result = await authService.logout(accessToken, refreshToken)
 		return res.status(StatusCodes.OK).json(result);
 	} catch (err) {
-		// console.error(err);
-		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+
+		return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
 	}
 
 }

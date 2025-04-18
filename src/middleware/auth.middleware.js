@@ -17,6 +17,8 @@ const authMiddelware = async (req, res, next) => {
 
 	try {
 
+		jwt.verifyToken(accessToken)
+
 		req.user = jwt.decodeToken(accessToken)
 
 		next()

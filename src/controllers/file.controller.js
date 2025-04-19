@@ -6,6 +6,7 @@ const handleError = require('../../utils/handleError')
 const handleSuccess = require('../../utils/handleSuccess')
 
 const paginate = require('../../utils/pagination')
+const validatorConstants = require('../../constants/validator.constants')
 
 module.exports.upload = async (req, res) => {
 
@@ -86,7 +87,7 @@ module.exports.update = async (req, res) => {
 		const newFile = req.fileInfo
 		newFile.size = req.file.size
 
-		const result = await fileService.update(oldFile, newFile)
+		await fileService.update(oldFile, newFile)
 		return handleSuccess(res, {
 			message: httpMsg.FILE_UPDATED
 		})
@@ -100,6 +101,22 @@ module.exports.update = async (req, res) => {
 
 
 module.exports.delete = async (req, res) => {
+	try {
 
+		const deleteFile = req.candidatFileInfo
+		// console.log(oldFile)
+		// const newFile = req.fileInfo
+		// newFile.size = req.file.size
+		// const id = req.params.id || null;
+		if (!deleteFile) return handleError(res, validatorConstants.REQUIRED_FIELD)
+
+		await fileService.delete(deleteFile)
+		return handleSuccess(res, {
+			message: httpMsg.FILE_DELETED
+		})
+
+	} catch (err) {
+		return handleError(res, err)
+	}
 }
 

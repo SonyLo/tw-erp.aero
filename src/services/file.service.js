@@ -54,12 +54,9 @@ module.exports.getInfoById = async (id) => {
 	if (!id) return httpError(validatorConstants.REQUIRED_FIELD, StatusCodes.BAD_REQUEST)
 
 	try {
-		return File.findOne({
-			where: {
-				guid: id,
-				is_delete: false
-			}
-		})
+
+		const result = await File.findActiveById(id)
+		return result ? result : httpMsg.FILE_NOT_FOUND
 	} catch (err) {
 		return err
 	}
@@ -97,18 +94,22 @@ module.exports.update = async (oldFile, newFile) => {
 	} catch (err) {
 		return err
 	}
-	// oldFile.update(newFile)
-
-	// return {
-	// 	oldFile,
-	// 	newFile
-	// }
-
-
 }
 
 
-module.exports.delete = async (id) => {
-
+module.exports.delete = async (deleteFile) => {
+	try {
+		return await File.update({
+			is_delete: true,
+			path: deleteFile.newPath
+		},
+			{
+				where: {
+					guid: deleteFile.guid
+				}
+			})
+	} catch (err) {
+		return err
+	}
 }
 

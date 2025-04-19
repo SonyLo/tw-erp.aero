@@ -26,6 +26,7 @@ module.exports = {
 	FILE_NOT_FOUND: 'Файл не найден',
 	FILE_UPLOADED: 'Файл успешно загружен',
 	FILE_UPDATED: 'Файл успешно обновлен',
+	FILE_DELETED: 'Файл успешно удален',
 
 
 

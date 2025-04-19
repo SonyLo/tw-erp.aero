@@ -18,18 +18,18 @@ const moveToTrash = async (req, res, next) => {
 	const candidat = await File.findActiveById(id)
 
 	if (!candidat) res.status(StatusCodes.BAD_REQUEST).json({ error: httpMsg.FILE_NOT_FOUND });
-	// console.log(candidat.path)
-	// тут мереместить файл в корзину и отдать дальше движ, если чет пошло не так - вернуть 500 
+
 	try {
 
 		fs.mkdirSync(trashDir, { recursive: true })
 		const destinationPath = path.join(trashDir, candidat.file_name);
 		fs.renameSync(candidat.path, destinationPath);
 		req.candidatFileInfo = candidat
+		req.candidatFileInfo.newPath = destinationPath
 		next()
 	} catch (err) {
 
-		handleError(res, err)
+		return handleError(res, err)
 	}
 
 

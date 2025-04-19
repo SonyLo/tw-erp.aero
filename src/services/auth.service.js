@@ -23,14 +23,14 @@ const jwt = require('../../utils/jwt');
 module.exports.createNewUser = async (user) => {
 
 	const result = userValidator(user)
-	if (result) httpError(result, StatusCodes.BAD_REQUEST)
+	if (result) return httpError(result, StatusCodes.BAD_REQUEST)
 	const candidat = await User.findOne({
 		where: {
 			id: user.id
 		}
 	})
 
-	if (candidat) httpError(httpMsg.USER_EXISTS, StatusCodes.BAD_REQUEST)
+	if (candidat) return httpError(httpMsg.USER_EXISTS, StatusCodes.BAD_REQUEST)
 
 	const salt = bcrypt.genSaltSync(10)
 	let hash = await bcrypt.hash(user.pass, salt);
@@ -47,7 +47,7 @@ module.exports.createNewUser = async (user) => {
 		return httpError(httpMsg.USER_CREATE_ERROR, StatusCodes.BAD_REQUEST)
 	}
 
-	return httpMsg.USER_CREATED
+	return { message: httpMsg.USER_CREATED }
 }
 
 

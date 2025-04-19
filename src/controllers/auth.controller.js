@@ -6,14 +6,17 @@ const helper = require('../../utils/helper')
 
 const blackListToken = require('../../utils/blackListToken')
 
+const handleError = require('../../utils/handleError')
+const handleSuccess = require('../../utils/handleSuccess')
+
 module.exports.signup = async (req, res) => {
 
 	try {
 		const result = await authService.createNewUser(req.body);
-		return res.status(StatusCodes.CREATED).json({ message: result });
+
+		return handleSuccess(res, result, StatusCodes.CREATED)
 	} catch (err) {
-		// console.error(err);
-		return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+		return handleError(res, err)
 	}
 
 }

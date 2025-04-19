@@ -9,7 +9,7 @@ const { swagger, swaggerUi } = require('./config/swagger.js');
 const authRouter = require('./src/routes/auth.router.js')
 const fileRouter = require('./src/routes/files.router.js')
 
-
+const authMiddelware = require('./src/middleware/auth.middleware.js')
 
 
 const port = process.env.PORT || 3000
@@ -27,7 +27,7 @@ app.use(express.json())
 app.use(cookieParser());
 
 app.use('/', authRouter)
-app.use('/file', fileRouter)
+app.use('/file', fileRouter) // вот тут повесить authMiddelware,
 
 
 

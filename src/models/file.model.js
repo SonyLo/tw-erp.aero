@@ -29,6 +29,10 @@ const File = sequelize.define('File', {
 		type: DataTypes.INTEGER,
 		allowNull: false,
 	},
+	is_delete: {
+		type: DataTypes.BOOLEAN,
+		defaultValue: false
+	},
 }, {
 	tableName: 'files',
 	timestamps: true,

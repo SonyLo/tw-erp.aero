@@ -2,6 +2,8 @@ const { StatusCodes } = require('http-status-codes')
 const fileService = require('../services/file.service')
 const httpMsg = require('../../constants/httpMsg.constants')
 
+const handleError = require('../../utils/handleError')
+
 const paginate = require('../../utils/pagination')
 
 module.exports.upload = async (req, res) => {
@@ -13,7 +15,7 @@ module.exports.upload = async (req, res) => {
 		return res.status(StatusCodes.OK).json({ message: httpMsg.FILE_UPLOADED })
 	}
 	catch (err) {
-		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+		return handleError(res, err)
 	}
 
 
@@ -25,20 +27,51 @@ module.exports.list = async (req, res) => {
 	try {
 		let pagination = await paginate(req.query)
 		const result = await fileService.list(pagination)
-		// console.log(result)
 		return res.status(StatusCodes.OK).json(result)
 	} catch (err) {
-		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+		return handleError(res, err)
 	}
 
+}
 
 
+
+module.exports.fileInfo = async (req, res) => {
+
+	try {
+		const id = req.params.id || null;
+		const result = await fileService.getInfoById(id)
+		return res.status(StatusCodes.OK).json(result)
+	} catch (err) {
+		return handleError(res, err)
+	}
 
 }
+
 
 module.exports.update = async (req, res) => {
 
+	try {
+		const id = req.params.id || null;
+		const result = await fileService.updateById(id)
+		return res.status(StatusCodes.OK).json(result)
+	} catch (err) {
+		return handleError(res, err)
+	}
+
 }
+module.exports.download = async (req, res) => {
+
+	try {
+		const id = req.params.id || null;
+		const result = await fileService.downloadById(id)
+		return res.download(result);
+	} catch (err) {
+		return handleError(res, err)
+	}
+
+}
+
 
 module.exports.delete = async (req, res) => {
 

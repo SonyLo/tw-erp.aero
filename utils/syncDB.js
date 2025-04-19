@@ -13,8 +13,8 @@ console.log(File === undefined ? 'File model not loaded' : 'File model loaded');
 		await sequelize.authenticate();
 		console.log('Подключение к БД прошло успешно.');
 
-		await sequelize.sync({ force: true });
-		// await sequelize.sync({ alter: true }); 
+		// await sequelize.sync({ force: true });
+		await sequelize.sync({ alter: true });
 		console.log('Все модели синхронизированы.');
 
 	} catch (error) {

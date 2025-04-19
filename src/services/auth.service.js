@@ -84,7 +84,8 @@ module.exports.signin = async (user, infoUserAgent, accessToken) => {
 		});
 	}
 	catch (err) {
-		throw new Error(`${httpMsg.REFRESH_TOKEN_CREATE_ERROR}  ${err.message}`);
+		return httpError(err.message, StatusCodes.BAD_REQUEST)
+		// throw new Error(`${httpMsg.REFRESH_TOKEN_CREATE_ERROR}  ${err.message}`);
 	}
 
 	return { tokenAccess, tokenRefresh }

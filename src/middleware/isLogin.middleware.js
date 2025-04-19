@@ -18,7 +18,7 @@ const httpMsg = require('../../constants/httpMsg.constants')
 const isLoginMiddelware = async (req, res, next) => {
 
 	const accessToken = helper.getAccesToken(req)
-	console.log(accessToken)
+
 
 	if (!accessToken) {
 		return next();

@@ -12,7 +12,7 @@ module.exports.signup = async (req, res) => {
 		const result = await authService.createNewUser(req.body);
 		return res.status(StatusCodes.CREATED).json({ message: result });
 	} catch (err) {
-		console.error(err);
+		// console.error(err);
 		return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
 	}
 
@@ -38,8 +38,8 @@ module.exports.signin = async (req, res) => {
 		const result = await authService.signin(req.body, infoUserAgent, accessToken);
 		return res.status(StatusCodes.OK).json(result);
 	} catch (err) {
-		console.error(err);
-		return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+		// console.error(err);
+		return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message ? err.message : err });
 	}
 
 
@@ -67,7 +67,7 @@ module.exports.info = async (req, res) => {
 		const result = await authService.info(req.user)
 		return res.status(StatusCodes.OK).json({ id: result });
 	} catch (err) {
-		console.error(err);
+		// console.error(err);
 		return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
 	}
 

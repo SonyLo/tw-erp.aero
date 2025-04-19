@@ -25,8 +25,9 @@ module.exports = {
 	FILE_UPLOAD: 'Файл успешно загружен',
 	FILE_UPLOAD_ERROR: 'Ошибка при загрузке файла',
 	FILE_NOT_FOUND: 'Файл не найден',
+	FILE_UPLOADED: 'Файл загружен',
 
 
+	FORBIDDEN_MIME_TYPES: 'Недопустимый тип файла',
 
-	FORBIDDEN_MIME_TYPES: 'Недопустимый тип файла'
 };

@@ -7,9 +7,8 @@ module.exports.upload = async (req, res) => {
 
 	try {
 		if (!req.fileInfo) return res.status(StatusCodes.BAD_REQUEST).json({ error: httpMsg.FILE_NOT_FOUND })
-		req.fileInfo.size = req.file.size,
-
-			await fileService.upload(req.fileInfo)
+		req.fileInfo.size = req.file.size
+		await fileService.upload(req.fileInfo)
 		return res.status(StatusCodes.OK).json({ message: httpMsg.FILE_UPLOADED })
 	}
 	catch (err) {

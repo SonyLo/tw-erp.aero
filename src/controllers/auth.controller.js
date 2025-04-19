@@ -46,21 +46,7 @@ module.exports.signin = async (req, res) => {
 
 }
 
-module.exports.newToken = async (req, res) => {
 
-	try {
-		const refreshToken = helper.getRefreshToken(req);
-		const checkRefreshBlackList = await blackListToken.checkRefreshBlackList(refreshToken)
-		const result = await authService.newAccesToken(refreshToken)
-
-		return res.status(StatusCodes.OK).json({ token: result });
-	}
-	catch (err) {
-		return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
-	}
-
-
-}
 
 module.exports.info = async (req, res) => {
 	// console.log("isValid")
@@ -77,7 +63,23 @@ module.exports.info = async (req, res) => {
 
 }
 
+module.exports.newToken = async (req, res) => {
 
+	try {
+		const refreshToken = helper.getRefreshToken(req);
+		const checkRefreshBlackList = await blackListToken.checkRefreshBlackList(refreshToken)
+		const result = await authService.newAccesToken(refreshToken)
+
+		return handleSuccess(res, result)
+		// return res.status(StatusCodes.OK).json({ token: result });
+	}
+	catch (err) {
+		handleError(res, err)
+		// return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+	}
+
+
+}
 
 module.exports.logout = async (req, res) => {
 	const refreshToken = helper.getRefreshToken(req);

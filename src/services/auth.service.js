@@ -121,7 +121,7 @@ module.exports.newAccesToken = async (refreshToken) => {
 			id: user.id,
 			pass: user.password_hash
 		};
-		return jwt.generateAccessToken(payload)
+		return { token: jwt.generateAccessToken(payload) }
 
 	}
 	catch (err) {

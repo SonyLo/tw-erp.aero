@@ -2,6 +2,7 @@ const { StatusCodes } = require('http-status-codes')
 const fileService = require('../services/file.service')
 const httpMsg = require('../../constants/httpMsg.constants')
 
+const paginate = require('../../utils/pagination')
 
 module.exports.upload = async (req, res) => {
 
@@ -21,6 +22,19 @@ module.exports.upload = async (req, res) => {
 
 
 module.exports.list = async (req, res) => {
+	try {
+		const { list_size, page } = req.query;
+
+		// console.log(page)
+		let pagination = await paginate(req.query)
+		console.log(pagination)
+		const result = await fileService.list(pagination)
+		// console.log(result)
+		return res.status(StatusCodes.OK).json(result)
+	} catch (err) {
+		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+	}
+
 
 
 

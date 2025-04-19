@@ -3,7 +3,6 @@ module.exports = {
 	USER_EXISTS: 'Пользователь с таким ID уже существует',
 	USER_CREATED: 'Пользователь успешно создан',
 	USER_NOT_FOUND: 'Пользователь не найден',
-
 	USER_ALREADY_AUTHORIZED: 'Пользователь уже авторизован',
 
 
@@ -26,6 +25,7 @@ module.exports = {
 	FILE_UPLOAD_ERROR: 'Ошибка при загрузке файла',
 	FILE_NOT_FOUND: 'Файл не найден',
 	FILE_UPLOADED: 'Файл загружен',
+
 
 
 	FORBIDDEN_MIME_TYPES: 'Недопустимый тип файла',

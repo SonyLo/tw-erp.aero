@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors');
-const path = require('path');
+
 const cookieParser = require('cookie-parser');
 
 
@@ -26,7 +26,7 @@ app.use(express.json())
 app.use(cookieParser());
 
 app.use('/', authRouter)
-app.use('/file', fileRouter) // вот тут повесить authMiddelware,
+app.use('/file', authMiddelware, fileRouter)
 
 
 

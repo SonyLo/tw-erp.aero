@@ -43,7 +43,7 @@ module.exports.createNewUser = async (user) => {
 		})
 	}
 	catch (err) {
-		// throw new Error(`${httpMsg.USER_CREATE_ERROR}  ${err.message}`);
+
 		return httpError(httpMsg.USER_CREATE_ERROR, StatusCodes.BAD_REQUEST)
 	}
 
@@ -55,7 +55,7 @@ module.exports.signin = async (user, infoUserAgent, accessToken) => {
 
 
 	const result = userValidator(user)
-	if (result) httpError(result, StatusCodes.BAD_REQUEST)
+	if (result) return httpError(result, StatusCodes.BAD_REQUEST)
 
 	const candidat = await User.findOne({
 		where: {
@@ -64,7 +64,7 @@ module.exports.signin = async (user, infoUserAgent, accessToken) => {
 	})
 
 
-	if (!candidat) httpError(httpMsg.USER_NOT_FOUND, StatusCodes.NOT_FOUND)
+	if (!candidat) return httpError(httpMsg.USER_NOT_FOUND, StatusCodes.NOT_FOUND)
 
 	const match = await bcrypt.compare(user.pass, candidat.password_hash);
 	if (!match) {
@@ -85,7 +85,7 @@ module.exports.signin = async (user, infoUserAgent, accessToken) => {
 	}
 	catch (err) {
 		return httpError(err.message, StatusCodes.BAD_REQUEST)
-		// throw new Error(`${httpMsg.REFRESH_TOKEN_CREATE_ERROR}  ${err.message}`);
+
 	}
 
 	return { tokenAccess, tokenRefresh }

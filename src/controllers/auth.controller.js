@@ -13,7 +13,6 @@ module.exports.signup = async (req, res) => {
 
 	try {
 		const result = await authService.createNewUser(req.body);
-
 		return handleSuccess(res, result, StatusCodes.CREATED)
 	} catch (err) {
 		return handleError(res, err)
@@ -27,22 +26,21 @@ module.exports.signin = async (req, res) => {
 
 
 	const accessToken = helper.getAccesToken(req)
-	// console.log(accessToken)
+
 	let ip = req.headers['x-forwarded-for'] ||
 		req.socket.remoteAddress ||
 		null;
 
 	let infoUserAgent = {
-		ip: ip?.replace('::ffff:', ''),
+		ip: ip?.replace('::ffff:', ''), // или может это нужно отправить на слой сервиса
 		userAgent: req.headers['user-agent'],
 	}
 
 	try {
 		const result = await authService.signin(req.body, infoUserAgent, accessToken);
-		return res.status(StatusCodes.OK).json(result);
+		return handleSuccess(res, result)
 	} catch (err) {
-		// console.error(err);
-		return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message ? err.message : err });
+		handleError(res, err)
 	}
 
 

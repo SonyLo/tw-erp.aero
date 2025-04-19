@@ -87,10 +87,10 @@ module.exports.logout = async (req, res) => {
 	try {
 
 		const result = await authService.logout(accessToken, refreshToken)
-		return res.status(StatusCodes.OK).json(result);
-	} catch (err) {
+		return handleSuccess(res, result)
 
-		return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+	} catch (err) {
+		return handleError(res, err)
 	}
 
 }

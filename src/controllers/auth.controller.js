@@ -67,15 +67,14 @@ module.exports.newToken = async (req, res) => {
 
 	try {
 		const refreshToken = helper.getRefreshToken(req);
-		const checkRefreshBlackList = await blackListToken.checkRefreshBlackList(refreshToken)
+		await blackListToken.checkRefreshBlackList(refreshToken)
 		const result = await authService.newAccesToken(refreshToken)
 
 		return handleSuccess(res, result)
-		// return res.status(StatusCodes.OK).json({ token: result });
+
 	}
 	catch (err) {
 		handleError(res, err)
-		// return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
 	}
 
 

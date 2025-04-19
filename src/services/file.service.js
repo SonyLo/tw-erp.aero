@@ -9,7 +9,6 @@ const File = require('../models/file.model')
 module.exports.upload = async (file) => {
 
 	try {
-		// console.log(file)
 		return await File.create(file)
 	} catch (err) {
 		return err

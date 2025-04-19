@@ -23,11 +23,7 @@ module.exports.upload = async (req, res) => {
 
 module.exports.list = async (req, res) => {
 	try {
-		const { list_size, page } = req.query;
-
-		// console.log(page)
 		let pagination = await paginate(req.query)
-		console.log(pagination)
 		const result = await fileService.list(pagination)
 		// console.log(result)
 		return res.status(StatusCodes.OK).json(result)

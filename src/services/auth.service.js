@@ -134,8 +134,12 @@ module.exports.newAccesToken = async (refreshToken) => {
 
 
 module.exports.logout = async (accessToken, refreshToken) => {
-	let transaction = null
 
+
+	if (!accessToken) return httpError(httpMsg.ACCSES_TOKEN_EMPTY, StatusCodes.BAD_REQUEST)
+	if (!refreshToken) return httpError(httpMsg.REFRESH_TOKEN_EMPTY, StatusCodes.BAD_REQUEST)
+
+	let transaction = null
 	try {
 		transaction = await sequelize.transaction();
 
@@ -150,7 +154,7 @@ module.exports.logout = async (accessToken, refreshToken) => {
 	}
 	catch (err) {
 		await transaction.rollback();
-		return httpError(err.message)
+		return httpError(err)
 	}
 
 }

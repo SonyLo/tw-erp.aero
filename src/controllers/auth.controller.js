@@ -81,8 +81,8 @@ module.exports.newToken = async (req, res) => {
 }
 
 module.exports.logout = async (req, res) => {
-	const refreshToken = helper.getRefreshToken(req);
-	const accessToken = helper.getAccesToken(req)
+	const refreshToken = helper.getRefreshToken(req) || null
+	const accessToken = helper.getAccesToken(req) || null
 
 	try {
 

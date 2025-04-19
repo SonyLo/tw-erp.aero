@@ -22,7 +22,7 @@ const checkAccsesBlackList = async (token) => {
 		}
 	})
 
-	// console.log(candidat)
+
 	if (candidat) {
 		return httpError(httpMsg.ACCSES_TOKEN_REVOKED, StatusCodes.UNAUTHORIZED)
 	}
@@ -45,7 +45,6 @@ const checkRefreshBlackList = async (token) => {
 		}
 	})
 
-	// console.log(candidat)
 	if (candidat) {
 		return httpError(httpMsg.REFRESH_TOKEN_REVOKED, StatusCodes.UNAUTHORIZED)
 	}
@@ -77,11 +76,11 @@ const addAccsesBlackList = async (token, options = {}) => {
 
 
 const addRefreshBlackList = async (token, options = {}) => {
-	const result = await checkRefreshBlackList(token)
-	if (result) return httpError(httpMsg.REFRESH_TOKEN_REVOKED, StatusCodes.BAD_REQUEST)
+
+	// if (result) return httpError(httpMsg.REFRESH_TOKEN_REVOKED, StatusCodes.BAD_REQUEST)
 
 	try {
-
+		await checkRefreshBlackList(token)
 		const updateToken = await UserToken.update(
 			{
 				is_revoked: true

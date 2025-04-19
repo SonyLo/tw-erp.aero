@@ -101,16 +101,15 @@ router.get('/info', authMiddelware, authController.info)
 
 
 
-
-
-
 /**
  * @swagger
  * /logout:
  *   get:
  *     summary: Выход
  *     tags: [Auth]
- *     description: 
+ *     description: Выход. Запрос требует авторизации.
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Успешно выполнено

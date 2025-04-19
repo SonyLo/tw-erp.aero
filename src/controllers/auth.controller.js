@@ -66,10 +66,12 @@ module.exports.info = async (req, res) => {
 	// console.log("isValid")
 	try {
 		const result = await authService.info(req.user)
-		return res.status(StatusCodes.OK).json({ id: result });
+		return handleSuccess(res, result)
+		// return res.status(StatusCodes.OK).json({ id: result });
+
 	} catch (err) {
-		// console.error(err);
-		return res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({ error: err.message });
+		return handleError(res, err)
+
 	}
 
 

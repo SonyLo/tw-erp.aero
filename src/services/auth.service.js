@@ -93,7 +93,7 @@ module.exports.signin = async (user, infoUserAgent, accessToken) => {
 }
 
 module.exports.info = async (user) => {
-	return user.id
+	return { id: user.id }
 }
 
 

@@ -21,10 +21,11 @@ module.exports = {
 
 
 
-	FILE_UPLOAD: 'Файл успешно загружен',
+
 	FILE_UPLOAD_ERROR: 'Ошибка при загрузке файла',
 	FILE_NOT_FOUND: 'Файл не найден',
-	FILE_UPLOADED: 'Файл загружен',
+	FILE_UPLOADED: 'Файл успешно загружен',
+	FILE_UPDATED: 'Файл успешно обновлен',
 
 
 

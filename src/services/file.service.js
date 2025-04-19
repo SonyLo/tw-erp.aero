@@ -23,6 +23,7 @@ module.exports.upload = async (file) => {
 
 module.exports.list = async (pagination) => {
 
+
 	try {
 
 		const { count, rows } = await File.findAndCountAll({
@@ -72,12 +73,7 @@ module.exports.downloadById = async (id) => {
 	if (!id) return httpError(validatorConstants.REQUIRED_FIELD, StatusCodes.BAD_REQUEST)
 
 	try {
-		const candidat = await File.findOne({
-			where: {
-				guid: id,
-				is_delete: false
-			}
-		})
+		const candidat = await File.findActiveById(id)
 
 		if (!candidat) return httpError(httpMsg.FILE_NOT_FOUND, StatusCodes.BAD_REQUEST)
 
@@ -90,9 +86,23 @@ module.exports.downloadById = async (id) => {
 
 }
 
-module.exports.updateById = async (id) => {
-	// удаляем физически файл 
+module.exports.update = async (oldFile, newFile) => {
 
+	try {
+		return await File.update(newFile, {
+			where: {
+				guid: oldFile.guid
+			}
+		})
+	} catch (err) {
+		return err
+	}
+	// oldFile.update(newFile)
+
+	// return {
+	// 	oldFile,
+	// 	newFile
+	// }
 
 
 }

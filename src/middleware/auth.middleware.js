@@ -9,7 +9,8 @@ const { requiredValidator } = require('../validators/required.validator')
 
 
 
-const blackListToken = require('../../utils/blackListToken')
+const blackListToken = require('../../utils/blackListToken');
+const handleError = require('../../utils/handleError');
 
 const authMiddelware = async (req, res, next) => {
 
@@ -29,7 +30,9 @@ const authMiddelware = async (req, res, next) => {
 		next()
 	}
 	catch (err) {
-		return err.message === 'jwt expired' ? res.status(StatusCodes.FORBIDDEN).json({ error: httpMsg.ACCSES_TOKEN_EXPIRED }) : res.status(StatusCodes.FORBIDDEN).json({ error: err.message });
+
+		return handleError(res, err)
+		// return err.message === 'jwt expired' ? res.status(StatusCodes.FORBIDDEN).json({ error: httpMsg.ACCSES_TOKEN_EXPIRED }) : res.status(StatusCodes.FORBIDDEN).json({ error: err.message });
 	}
 }
 

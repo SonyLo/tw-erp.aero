@@ -3,6 +3,7 @@ const fileService = require('../services/file.service')
 const httpMsg = require('../../constants/httpMsg.constants')
 
 const handleError = require('../../utils/handleError')
+const handleSuccess = require('../../utils/handleSuccess')
 
 const paginate = require('../../utils/pagination')
 
@@ -12,7 +13,10 @@ module.exports.upload = async (req, res) => {
 		if (!req.fileInfo) return res.status(StatusCodes.BAD_REQUEST).json({ error: httpMsg.FILE_NOT_FOUND })
 		req.fileInfo.size = req.file.size
 		await fileService.upload(req.fileInfo)
-		return res.status(StatusCodes.OK).json({ message: httpMsg.FILE_UPLOADED })
+		// return res.status(StatusCodes.OK).json({ message: httpMsg.FILE_UPLOADED })
+		return handleSuccess(res, {
+			message: httpMsg.FILE_UPLOADED
+		})
 	}
 	catch (err) {
 		return handleError(res, err)
@@ -24,12 +28,20 @@ module.exports.upload = async (req, res) => {
 
 
 module.exports.list = async (req, res) => {
+
 	try {
+
 		let pagination = await paginate(req.query)
+
+
 		const result = await fileService.list(pagination)
-		return res.status(StatusCodes.OK).json(result)
+
+		return handleSuccess(res, { result })
+
+		// return res.status(StatusCodes.OK).json(result)
 	} catch (err) {
-		return handleError(res, err)
+
+		// return handleError(res, err)
 	}
 
 }
@@ -41,20 +53,12 @@ module.exports.fileInfo = async (req, res) => {
 	try {
 		const id = req.params.id || null;
 		const result = await fileService.getInfoById(id)
-		return res.status(StatusCodes.OK).json(result)
-	} catch (err) {
-		return handleError(res, err)
-	}
 
-}
+		return handleSuccess(res, {
+			result
+		})
 
-
-module.exports.update = async (req, res) => {
-
-	try {
-		const id = req.params.id || null;
-		const result = await fileService.updateById(id)
-		return res.status(StatusCodes.OK).json(result)
+		// return res.status(StatusCodes.OK).json(result)
 	} catch (err) {
 		return handleError(res, err)
 	}
@@ -71,6 +75,28 @@ module.exports.download = async (req, res) => {
 	}
 
 }
+
+
+
+module.exports.update = async (req, res) => {
+
+	try {
+
+		const oldFile = req.candidatFileInfo
+		const newFile = req.fileInfo
+		newFile.size = req.file.size
+
+		const result = await fileService.update(oldFile, newFile)
+		return handleSuccess(res, {
+			message: httpMsg.FILE_UPDATED
+		})
+
+	} catch (err) {
+		return handleError(res, err)
+	}
+
+}
+
 
 
 module.exports.delete = async (req, res) => {

@@ -9,14 +9,16 @@ const httpMsg = require('../../constants/httpMsg.constants');
 
 
 const storage = multer.diskStorage({
+
 	destination(req, file, cb) {
 		const uploadDir = 'public/upload'
 		fs.mkdirSync(uploadDir, { recursive: true })
+
 		cb(null, uploadDir)
 	},
 	filename(req, file, cb) {
 
-		const originalName = Buffer.from(file.originalname, 'latin1').toString('utf8')
+		const originalName = file.originalname
 		const ext = path.extname(originalName)
 		const uniqueName = `${crypto.randomUUID()}${ext}`
 
@@ -38,6 +40,7 @@ const fileFilter = (req, file, cb) => {
 
 		cb(null, true)
 	} else {
+
 		cb(null, false)
 		// cb(null, false)
 	}

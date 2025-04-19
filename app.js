@@ -13,7 +13,6 @@ const authMiddelware = require('./src/middleware/auth.middleware.js')
 
 
 const port = process.env.PORT || 3000
-const publicDir = path.join(__dirname, 'public');
 
 
 const app = express()
@@ -21,7 +20,7 @@ const app = express()
 app.use(cors(corsOptions))
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swagger));
-app.use('/public', express.static(publicDir));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 app.use(cookieParser());

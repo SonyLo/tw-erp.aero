@@ -38,6 +38,17 @@ const File = sequelize.define('File', {
 	timestamps: true,
 });
 
+
+
+File.findActiveById = function (id) {
+	return this.findOne({
+		where: {
+			guid: id,
+			is_delete: false
+		}
+	});
+};
+
 module.exports = File;
 
 

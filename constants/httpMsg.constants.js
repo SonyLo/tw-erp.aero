@@ -1,4 +1,7 @@
 module.exports = {
+	SEQUELIZE_CONNECTION_REFUSED_ERROR: 'Ошибка подключения к базе данных. Попробуйте позже.',
+
+
 	USER_CREATE_ERROR: 'Ошибка при создании пользователя в БД',
 	USER_EXISTS: 'Пользователь с таким ID уже существует',
 	USER_CREATED: 'Пользователь успешно создан',
